@@ -1,0 +1,6 @@
+# XML and TXT files
+*.xml
+*.txt
+
+# Except the testcase file
+!testcases.txt
