@@ -55,7 +55,7 @@ else:
 
 def cleanupIncubator(text):
     # Remove all instances of the prefix (including /)
-    text = re.sub(r" *(?i:" + prefix + r")/", "", text)
+    text = re.sub(r" *" + prefix + r"/", "", text)
     # Turn [[Abc|abc]] into [[abc]]
     text = re.sub(r"\[\[ *((?i:\w))(.*?) *\| *((?i:\1)\2)\ *]\]", r"[[\3]]", text)
     # Turn [[Abc|abcdef]] into [[abc]]def

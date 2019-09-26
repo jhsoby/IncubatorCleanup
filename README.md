@@ -59,7 +59,7 @@ mentioned above, but tests various other replacements that will be made.
 
 Run the script with the test case file like this:
 
-`python3 IncubatorCleanup.py Xx/und testcases.txt`
+`python3 IncubatorCleanup.py Wp/ru testcases.txt --translatens`
 
 Then review the resulting file `testcases-READY.txt`.
 
