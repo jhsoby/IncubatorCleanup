@@ -46,11 +46,12 @@ file in case it is a redirect or (2b) remove the offending characters in case
 there are no pagename conflicts.
 
 Additionally, the script will **print a warning** in case the prefix is still
-present in the resulting XML file. This normally happens because of human error.
-The editor of a revision has omitted a /, or they have written the prefix with
-more CAPTITAL LETTERS than they should. The script will print the lines where
-this occurs, so you can go over the exported XML file and check to see what was
-the cause of these errors, save, and run the script again.
+present in the resulting XML file. This normally happens because of human error,
+like if an editor has omitted an / or the prefix is not properly inside a link
+or a template (e.g. if someone has put one too few square brackets around a
+link). The script will print the lines where this occurs, so you can go over the
+exported XML file and check to see what was the cause of these errors, save, and
+run the script again.
 
 ## Test cases
 In this repository there is a file named `testcases.txt`, that you can run the

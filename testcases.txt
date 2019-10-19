@@ -1,4 +1,4 @@
-This is the testcases file where you can check if the replacements are done probably. It should warn you about remaining prefixes on lines 11, 14 and 16.
+This is the testcases file where you can check if the replacements are done properly. It should warn you about remaining prefixes on lines 11 and 14.
 
 '''This''' is some wiki syntax where we have a [[Wp/ru/Link|link]] to a page. Some times we will have a  {{wp/ru/red text|template that should give red text}} or something.
 
@@ -13,13 +13,14 @@ This line (line 11) should make the script give a warning, since Wp/ru is presen
 The link in [[Wp/ru/This line|this line]] should not be piped in the output file.
 However, if the editor wrote [[ wp/ruThis instead|This instead]], the prefix will remain. This line (line 14) will also give a warning when the script is run.
 
-If for some reason the editors have put capital letters where there shouldn't be, those cases '''will not''' be removed by the script. [[WP/ru/All|All]] [[WP/RU/of these|of these]] [[Wp/Ru/Links|links]] will remain as they are, but the script will give a warning about this line (line 16).
-
 At the end of the page (or wherever, really) you will have some categories. Here the category in the middle should be removed, while the others should have their prefixes removed. If you specify the --translatens parameter, these would be localized with the correct category names for Russian.
 
 [[Category:Wp/ru/Test cases| ]]
 [[ Category:Wp/ru|Sort key]]
 [[  Category : Wp/ru/Jokes   ]]
+[[Category:Wp/ru/Something|{{PAGENAME}}]] <-- unnecessary sortkey, will be removed
+[[Category:Wp/ru/Else|{{SUBPAGENAME}}]] <!-- unnecessary sortkey, will be removed
+[[Category:Wp/ru/Entirely|S]] <!-- also an unnecessary sortkey, will be removed
 
 Some times people will put all categories in one line, but the same should be the result then:
 [[Category:Wp/ru/Test cases| ]][[Category : Wp/ru]][[Category:wp/ru/jokes]]

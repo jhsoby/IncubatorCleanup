@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3.6
 # -*- coding: utf-8  -*-
 """
 Clean up a Wikimedia Incubator project before importing it to the new home wiki.
@@ -55,16 +55,19 @@ else:
 
 def cleanupIncubator(text):
     # Remove all instances of the prefix (including /)
-    text = re.sub(r" *" + prefix + r"/", "", text)
+    text = re.sub(r" *(?i:" + prefix + r")/", "", text)
     # Turn [[Abc|abc]] into [[abc]]
     text = re.sub(r"\[\[ *((?i:\w))(.*?) *\| *((?i:\1)\2)\ *]\]", r"[[\3]]", text)
     # Turn [[Abc|abcdef]] into [[abc]]def
     text = re.sub(r"\[\[ *((?i:\w))(.*?) *\| *((?i:\1)\2)(\w+) *\]\]", r"[[\3]]\4", text)
     # Remove the base category
     text = re.sub(r"\n?\[\[ *[Cc]ategory *: *" + prefix + ".*?\]\]", "", text)
+    # Remove {{PAGENAME}} category sortkeys, and first-letter-only sortkeys
+    text = re.sub(r"\[\[ *[Cc]ategory *: *(.+?)\| *{{(SUB)?PAGENAME}} *\]\]", r"[[Category:\1]]", text)
+    text = re.sub(r"\[\[ *[Cc]ategory *: *(.+?)\| *\w *\]\]", r"[[Category:\1]]", text)
     # Translate namespaces
     for key in namespaces:
-        key_reg = "[" + key[0] + key[0].lower() + "]" + key[1:]
+        key_reg = "[" + key[0].upper() + key[0].lower() + "]" + key[1:]
         text = re.sub(r"\[\[ *" + key_reg + " *: *([^\|\]])", r"[[" + namespaces[key] + r":\1", text)
     return text
 
