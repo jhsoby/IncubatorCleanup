@@ -4,12 +4,11 @@
 Clean up a Wikimedia Incubator project before importing it to the new home wiki.
 
 usage:
-    python3 IncubatorCleanup.py prefix XMLfilename.xml [--translatens]
+    python3 IncubatorCleanup.py prefix XMLfilename.xml [--notranslate --wiktionary]
 """
 
 from argparse import ArgumentParser
-import re
-import urllib.request, json
+import re, urllib.request, json
 
 strings = {
     "exception_filename": "ERROR: The filename (given as \"%s\") needs to have a three- or four-letter extension (typically .xml).",
@@ -20,12 +19,15 @@ strings = {
 parser = ArgumentParser()
 parser.add_argument("prefix",nargs=1,help="the prefix used by the test wiki")
 parser.add_argument("XMLfile",nargs=1,help="the name of the exported XML file")
-parser.add_argument("--translatens",action="store_true",
-    help="use if namespaces should be translated (recommended)")
+parser.add_argument("--notranslate",action="store_true",
+    help="use if namespaces should not be translated (not recommended)")
+parser.add_argument("--wiktionary",action="store_true",
+    help="use if the project separates between cases in initial letters of pagenames")
 args = parser.parse_args()
 
+wiktionary = args.wiktionary
 namespaces = {}
-if args.translatens:
+if not args.notranslate:
     urlmap = {
         "wp": "wikipedia",
         "wb": "wikibooks",
@@ -53,16 +55,22 @@ if prefix[0].isupper():
 else:
     prefix = "[" + prefix[0].upper() + prefix[0] + "]" + prefix[1:]
 
-def cleanupIncubator(text):
+def cleanup_incubator(text):
     # Remove all instances of the prefix (including /)
     text = re.sub(r" *(?i:" + prefix + r")/", "", text)
-    # Turn [[Abc|abc]] into [[abc]]
-    text = re.sub(r"\[\[ *((?i:\w))(.*?) *\| *((?i:\1)\2)\ *]\]", r"[[\3]]", text)
-    # Turn [[Abc|abcdef]] into [[abc]]def
-    text = re.sub(r"\[\[ *((?i:\w))(.*?) *\| *((?i:\1)\2)(\w+) *\]\]", r"[[\3]]\4", text)
+    if not wiktionary:
+        # Turn [[Abc|abc]] into [[abc]]
+        text = re.sub(r"\[\[ *((?i:\w))(.*?) *\| *((?i:\1)\2)\ *\]\]", r"[[\3]]", text)
+        # Turn [[Abc|abcdef]] into [[abc]]def
+        text = re.sub(r"\[\[ *((?i:\w))(.*?) *\| *((?i:\1)\2)(\w+) *\]\]", r"[[\3]]\4", text)
+    else:
+        # Turn [[abc|abc]] into [[abc]]
+        text = re.sub(r"\[\[ *(.*?) *\| *\1 *\]\]", r"[[\1]]", text)
+        # Turn [[abc|abcdef]] into [[abc]]def
+        text = re.sub(r"\[\[ *(.*?) *\| *\1(\w+) *\]\]", r"[[\1]]\2", text)
     # Remove the base category
     text = re.sub(r"\n?\[\[ *[Cc]ategory *: *" + prefix + ".*?\]\]", "", text)
-    # Remove {{PAGENAME}} category sortkeys, and first-letter-only sortkeys
+    # Remove {{PAGENAME}} category sortkeys, and one-letter-only sortkeys
     text = re.sub(r"\[\[ *[Cc]ategory *: *(.+?)\| *{{(SUB)?PAGENAME}} *\]\]", r"[[Category:\1]]", text)
     text = re.sub(r"\[\[ *[Cc]ategory *: *(.+?)\| *\w *\]\]", r"[[Category:\1]]", text)
     # Translate namespaces
@@ -76,7 +84,7 @@ with open(file, "r") as origin, open(resultfile, "a") as output:
     lines_with_prefix = []
     for line in origin:
         linenumber += 1
-        resultline = cleanupIncubator(line)
+        resultline = cleanup_incubator(line)
         if re.search(prefix, resultline, flags=re.IGNORECASE):
             lines_with_prefix.append(str(linenumber))
         if re.search(r"<title>[: ]", resultline):

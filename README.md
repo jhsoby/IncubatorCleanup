@@ -1,28 +1,34 @@
 ## About This Repository
 This repository contains a Python script that can be used to clean up exported
-XML files for projects that are ready to be imported from Wikimedia Incubator
-to their permanent wikis.
+XML files for projects that are ready to be imported from
+[Wikimedia Incubator](https://incubator.wikimedia.org/) to their permanent
+wikis.
 
 ## Usage
 Download this repository (or, if you want, just the file `IncubatorCleanup.py`,
-that's all you'll really need). The file is run with two obligatory arguments,
-namely `prefix` and `XMLfile`, and the optional (but recommended!) argument
-`--translatens`.
+that's all you'll really need). The file is run with two obligatory arguments
+and two optional arguments:
 
-The `prefix` needs to be the prefix used by the pages on the Wikimedia
-Incubator. So for a Wikipedia in Esperanto, the prefix would be `Wp/eo`.
-
-The `XMLfile` is the filename of the XML file you got when you exported all the
+* `prefix` needs to be the prefix used by the pages on the Wikimedia Incubator.
+So for a Wikipedia in Esperanto, the prefix would be `Wp/eo`.
+* `XMLfile` is the filename of the XML file you got when you exported all the
 contents from the test wiki on the Incubator.
-
-The optional (but recommended) `--translatens` translates all namespaces names
-(such as Category:, Talk:, File:, etc) into the target language instead of
-keeping them in English (which is the interface language on Incubator). **This
-parameter will only work if the wiki has already been created.**
+* (optional) `--wiktionary` is used if pagenames on the wiki will be
+case-sensitive. On Wikipedias, [[This]] and [[this]] will link to the same page,
+but on Wiktionaries, they will be different pages. This also applies to any
+other non-Wiktionary wikis with the `$wgCapitalLinks` option set to false, such
+as the Wikipedias in [Lojban](https//jbo.wikipedia.org) or
+[Sakizaya](https://szy.wikipedia.org/).
+* (optional) `--notranslate` will *not* translate namespace names (such as
+Category:, Talk:, File:, etc) into the target language, instead keeping them
+in English (which is the interface language on Incubator). If the wiki you're
+running the script for has not yet been created, you will have to use this, as
+the script fetches the namespace names from the wiki's API, which will not work
+if the wiki doesn't exist yet.
 
 For a Wikipedia in Esperanto you would run the script like this:
 
-`python3 IncubatorCleanup.py Wp/eo EsperantoWikipedia.xml --translatens`
+`python3 IncubatorCleanup.py Wp/eo EsperantoWikipedia.xml`
 
 And, assuming no errors, the resulting file will be named
 `EsperantoWikipedia-READY.xml`.
@@ -60,11 +66,7 @@ mentioned above, but tests various other replacements that will be made.
 
 Run the script with the test case file like this:
 
-`python3 IncubatorCleanup.py Wp/ru testcases.txt --translatens`
+`python3 IncubatorCleanup.py Wp/ru testcases.txt`
 
-Then review the resulting file `testcases-READY.txt`.
-
-## Caveats
-The script is currently not optimized for use for wikis where `$wgCapitalLinks`
-is false. This includes all Wiktionaries, and any projects in the Lojban
-language.
+Then review the resulting file `testcases-READY.txt`. You should also try it
+with the optional parameters to see what the differences are.

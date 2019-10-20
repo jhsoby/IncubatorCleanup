@@ -2,7 +2,7 @@ This is the testcases file where you can check if the replacements are done prop
 
 '''This''' is some wiki syntax where we have a [[Wp/ru/Link|link]] to a page. Some times we will have a  {{wp/ru/red text|template that should give red text}} or something.
 
-This should give a [[Wp/ru/Link|linktrail]]. Bonus: You could check if the $linkTrail setting in MessagesXxx.php has correct settings. You  might want to add (or request that someone adds) special characters in this language to its regex.
+This should give a [[Wp/ru/Link|linktrail]], unless the --wiktionary option is used. Bonus: You could check if the $linkTrail setting in MessagesXxx.php has correct settings. You  might want to add (or request that someone adds) special characters in this language to its regex.
 
 This one, however, should ''not'' give a [[Wp/ru/liNk|linktrail]].
 
@@ -32,6 +32,6 @@ If you specify the --translatens parameter, the namespaces here should all be tr
 [[User:Someusername]]
 [[User talk:Some other username]]
 [[Template:This is a template]]
-[[Template talk:Tak page]]
+[[Template talk:Talk page]]
 [[Help:A help page]]
 [[Help talk:A help talk page]]
