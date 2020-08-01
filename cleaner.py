@@ -4,7 +4,7 @@
 Clean up a Wikimedia Incubator project before importing it to the new home wiki.
 
 usage:
-    python3 IncubatorCleanup.py prefix XMLfilename.xml [--notranslate --wiktionary]
+    python3 cleaner.py prefix XMLfilename.xml [--notranslate --wiktionary]
 """
 
 from argparse import ArgumentParser
@@ -45,7 +45,7 @@ if not args.notranslate:
                 namespaces["Image"] = data[ns]["*"]
 
 file = args.XMLfile[0]
-resultfile = re.sub(r'\.(\w{3,4})', r'-READY.\1', file)
+resultfile = re.sub(r'\.(\w{3,4})', r'.ready.\1', file)
 if file == resultfile:
     raise Exception(strings["exception_filename"] % file)
 open(resultfile, "w").close()
@@ -71,8 +71,8 @@ def cleanup_incubator(text):
     # Remove the base category
     text = re.sub(r"\n?\[\[ *[Cc]ategory *: *" + prefix + ".*?\]\]", "", text)
     # Remove {{PAGENAME}} category sortkeys, and one-letter-only sortkeys
-    text = re.sub(r"\[\[ *[Cc]ategory *: *(.+?)\| *{{(SUB)?PAGENAME}} *\]\]", r"[[Category:\1]]", text)
-    text = re.sub(r"\[\[ *[Cc]ategory *: *(.+?)\| *\w *\]\]", r"[[Category:\1]]", text)
+    text = re.sub(r"\[\[ *[Cc]ategory *: *(.+?)\|{{(SUB)?PAGENAME}} *\]\]", r"[[Category:\1]]", text)
+    text = re.sub(r"\[\[ *[Cc]ategory *: *(.+?)\|\w *\]\]", r"[[Category:\1]]", text)
     # Translate namespaces
     for key in namespaces:
         key_reg = "[" + key[0].upper() + key[0].lower() + "]" + key[1:]
