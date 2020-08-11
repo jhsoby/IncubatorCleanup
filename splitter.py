@@ -45,13 +45,13 @@ with open(filename, "r") as file:
         if ("</mediawiki>" in line) and (currentslice != "</mediawiki>\n"):
             with open(directory + "/" + directory + "_" + str(slicenumber) + ".xml", "w") as slice:
                 slice.write(prepend + currentslice)
+                print("Slice " + str(slicenumber) + ": Final slice")
         if "</page>" in line:
             if (slicesize > maxsize) or (pagesinslice >= maxpages):
                 if slicesize > maxsize:
-                    print("STØRRELSE", slicenumber, slicesize)
+                    print("Slice " + str(slicenumber) + ": Split because of file size")
                 elif pagesinslice >= maxpages:
-                    print("SIDER", slicenumber, slicesize)
-                print(currentslice[:100])
+                    print("Slice " + str(slicenumber) + ": Split because of number of pages")
                 with open(directory + "/" + directory + "_" + str(slicenumber) + ".xml", "w") as slice:
                     slice.write(prepend + currentslice + append)
                 slicenumber += 1
