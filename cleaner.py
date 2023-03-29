@@ -50,10 +50,7 @@ if file == resultfile:
     raise Exception(strings["exception_filename"] % file)
 open(resultfile, "w").close()
 prefix = args.prefix[0]
-if prefix[0].isupper():
-    prefix = "[" + prefix[0] + prefix[0].lower() + "]" + prefix[1:]
-else:
-    prefix = "[" + prefix[0].upper() + prefix[0] + "]" + prefix[1:]
+prefix = "[" + prefix[0].upper() + prefix[0].lower() + "]" + prefix[1:]
 
 def cleanup_incubator(text):
     # Remove all instances of the prefix (including /)

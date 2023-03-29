@@ -33,9 +33,16 @@ with open(filename, "r") as file:
     pagesinslice = 0
     stop = False
     currentslice = ""
+    firsttitle = ""
+    lasttitle = ""
     for line in file:
         if not hitpage and not "<page>" in line:
             prepend += line
+        if "<title>" in line:
+            title = re.sub(r".*\<title\>", "", line)
+            title = re.sub(r"\</title\>.*\n*", "", title)
+            firsttitle = firsttitle or title
+            lasttitle = title
         if "<page>" in line:
             hitpage = True
             pagesinslice += 1
@@ -52,6 +59,10 @@ with open(filename, "r") as file:
                     print("Slice " + str(slicenumber) + ": Split because of file size")
                 elif pagesinslice >= maxpages:
                     print("Slice " + str(slicenumber) + ": Split because of number of pages")
+                print("          - First page: " + firsttitle)
+                print("          - Last page: " + lasttitle)
+                print("") # line break
+                firsttitle = ""
                 with open(directory + "/" + directory + "_" + str(slicenumber) + ".xml", "w") as slice:
                     slice.write(prepend + currentslice + append)
                 slicenumber += 1
