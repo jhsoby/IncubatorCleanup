@@ -25,7 +25,7 @@ contents from the test wiki on the Incubator.
 case-sensitive. On Wikipedias, [[This]] and [[this]] will link to the same page,
 but on Wiktionaries, they will be different pages. This also applies to any
 other non-Wiktionary wikis with the `$wgCapitalLinks` option set to false, such
-as the Wikipedias in [Lojban](https//jbo.wikipedia.org) or
+as the Wikipedias in [Lojban](https://jbo.wikipedia.org) or
 [Sakizaya](https://szy.wikipedia.org/).
 * (optional) `--notranslate` will *not* translate namespace names (such as
 Category:, Talk:, File:, etc) into the target language, instead keeping them
