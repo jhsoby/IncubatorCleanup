@@ -76,7 +76,7 @@ def cleanup_incubator(text):
         text = re.sub(r"\[\[ *" + key_reg + " *: *([^\|\]])", r"[[" + namespaces[key] + r":\1", text)
     return text
 
-with open(file, "r") as origin, open(resultfile, "a") as output:
+with open(file, "r", encoding="utf-8") as origin, open(resultfile, "a", encoding="utf-8") as output:
     linenumber = 0
     lines_with_prefix = []
     for line in origin:
