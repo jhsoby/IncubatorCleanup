@@ -66,14 +66,14 @@ def cleanup_incubator(text):
         # Turn [[abc|abcdef]] into [[abc]]def
         text = re.sub(r"\[\[ *(.*?) *\| *\1(\w+) *\]\]", r"[[\1]]\2", text)
     # Remove the base category
-    text = re.sub(r"\n?\[\[ *[Cc]ategory *: *" + prefix + ".*?\]\]", "", text)
+    text = re.sub(r"\n?\[\[ *[Cc]ategory *: *" + prefix + r".*?\]\]", "", text)
     # Remove {{PAGENAME}} category sortkeys, and one-letter-only sortkeys
     text = re.sub(r"\[\[ *[Cc]ategory *: *(.+?)\|{{(SUB)?PAGENAME}} *\]\]", r"[[Category:\1]]", text)
     text = re.sub(r"\[\[ *[Cc]ategory *: *(.+?)\|\w *\]\]", r"[[Category:\1]]", text)
     # Translate namespaces
     for key in namespaces:
         key_reg = "[" + key[0].upper() + key[0].lower() + "]" + key[1:]
-        text = re.sub(r"\[\[ *" + key_reg + " *: *([^\|\]])", r"[[" + namespaces[key] + r":\1", text)
+        text = re.sub(r"\[\[ *" + key_reg + r" *: *([^\|\]])", r"[[" + namespaces[key] + r":\1", text)
     return text
 
 with open(file, "r", encoding="utf-8") as origin, open(resultfile, "a", encoding="utf-8") as output:
