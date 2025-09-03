@@ -36,7 +36,14 @@ if not args.notranslate:
         "wy": "wikivoyage",
         "wt": "wiktionary"
     }
-    with urllib.request.urlopen("https://" + args.prefix[0].lower().split("/")[1] + "." + urlmap[args.prefix[0].lower().split("/")[0]] + ".org/w/api.php?action=query&meta=siteinfo&siprop=namespaces&format=json") as url:
+    req = urllib.request.Request(
+        "https://" + args.prefix[0].lower().split("/")[1] + "." + urlmap[args.prefix[0].lower().split("/")[0]] + ".org/w/api.php?action=query&meta=siteinfo&siprop=namespaces&format=json",
+        data = None,
+        headers = {
+            "User-Agent": "Incubator Cleanup (https://github.com/jhsoby/IncubatorCleanup/)"
+        }
+    )
+    with urllib.request.urlopen(req) as url:
         data = json.loads(url.read().decode())["query"]["namespaces"]
         for ns in data:
             if not ns == "0":
